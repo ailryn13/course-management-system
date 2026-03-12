@@ -1,9 +1,49 @@
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const emailError = document.getElementById('emailError');
+const passwordError = document.getElementById('passwordError');
+const loginBtn = document.getElementById('loginBtn');
+
+emailInput.addEventListener('input', function() {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (emailInput.value.length > 0 && !emailPattern.test(emailInput.value)) {
+        emailError.style.display = 'block';
+        emailInput.style.borderColor = 'red';
+        loginBtn.disabled = true; 
+    } else {
+        emailError.style.display = 'none';
+        emailInput.style.borderColor = '#ccc'; 
+        checkFormValidity();
+    }
+});
+
+passwordInput.addEventListener('input', function() {
+    if (passwordInput.value.trim() === "" && passwordInput.value.length > 0) {
+        passwordError.style.display = 'block';
+        passwordInput.style.borderColor = 'red';
+        loginBtn.disabled = true;
+    } else {
+        passwordError.style.display = 'none';
+        passwordInput.style.borderColor = '#ccc';
+        checkFormValidity();
+    }
+});
+
+function checkFormValidity() {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailPattern.test(emailInput.value) && passwordInput.value.trim() !== "") {
+        loginBtn.disabled = false;
+    }
+}
+
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const credentials = { email: email, password: password };
+    const credentials = { 
+        email: emailInput.value, 
+        password: passwordInput.value 
+    };
 
     fetch('http://localhost:8080/api/students/login', {
         method: 'POST',

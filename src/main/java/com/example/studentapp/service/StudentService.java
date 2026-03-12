@@ -20,6 +20,9 @@ public class StudentService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
     public Student registerStudent(Student student) throws Exception{
+        if(student.getName()==null || !student.getName().matches("[A-Za-z ]+$")){
+            throw new Exception("Registration failed: Name can only contain letters and spaces!");
+        }
         Optional<Student> existingStudent= studentRepository.findByEmail(student.getEmail());
         if(existingStudent.isPresent()){
             throw new Exception("Email is already Registered!");
@@ -31,7 +34,7 @@ public class StudentService {
     }
     public Student loginStudent(String email, String rawPassword) throws Exception{
         Student student = studentRepository.findByEmail(email)
-            .orElseThrow(() -> new Exception("Invalid email or password!"));
+            .orElseThrow(() -> new Exception("User does not exist!"));
 
         if(!passwordEncoder.matches(rawPassword, student.getPassword())){
             throw new Exception("Invalid email or Password!");
