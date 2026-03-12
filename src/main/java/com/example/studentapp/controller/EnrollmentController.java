@@ -22,25 +22,17 @@ public class EnrollmentController {
     }
 
     @PostMapping("/{courseId}")
-    public ResponseEntity<?> enrollStudent(@PathVariable Long courseId,@RequestParam Long studentId){
-        try{
-            Enrollment enrollment = enrollmentService.enrollStudent(studentId, courseId);
-            return ResponseEntity.ok(enrollment);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<?> enrollStudent(@PathVariable Long courseId,@RequestParam Long studentId) throws Exception{
+        Enrollment enrollment = enrollmentService.enrollStudent(studentId, courseId);
+        return ResponseEntity.ok(enrollment);
     }
 
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<?> unenrollStudent(@PathVariable Long courseId,@RequestParam Long studentId){
-        try{
-            enrollmentService.unenrollStudent(studentId,courseId);
+    public ResponseEntity<?> unenrollStudent(@PathVariable Long courseId,@RequestParam Long studentId) throws Exception{
+        enrollmentService.unenrollStudent(studentId,courseId);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Succesfully unenrolled from the course!");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Succesfully unenrolled from the course!");
+        return ResponseEntity.ok(response);
     }
 }

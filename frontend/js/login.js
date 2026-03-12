@@ -52,7 +52,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
     .then(response => {
         if (response.ok) return response.json();
-        return response.text().then(text => { throw new Error(text) });
+        return response.json().then(errorData => { throw new Error(errorData.message) });
     })
     .then(data => {
         localStorage.setItem('loggedInStudentId', data.studentId);

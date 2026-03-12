@@ -14,7 +14,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     })
     .then(response => {
         if (response.ok) return response.json();
-        return response.text().then(text => { throw new Error(text) });
+        return response.json().then(errorData => { throw new Error(errorData.message) });
     })
     .then(data => {
         const msgElement = document.getElementById('message');
