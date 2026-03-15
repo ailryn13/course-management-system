@@ -14,6 +14,8 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
     @Autowired
     public StudentService(StudentRepository studentRepository){
         this.studentRepository = studentRepository;
@@ -23,6 +25,15 @@ public class StudentService {
         if(student.getName()==null || !student.getName().matches("[A-Za-z ]+$")){
             throw new Exception("Registration failed: Name can only contain letters and spaces!");
         }
+
+        if(student.getEmail() == null || student.getEmail().matches(EMAIL_REGEX)){
+            throw new Exception("Registration failed: Invalid email format!");
+        }
+
+        if(student.getPassword() == null || student.getPassword().length()<6){
+            throw new Exception("Registration failed: Password must be at le");
+        }
+
         Optional<Student> existingStudent= studentRepository.findByEmail(student.getEmail());
         if(existingStudent.isPresent()){
             throw new Exception("Email is already Registered!");
@@ -33,6 +44,10 @@ public class StudentService {
         return studentRepository.save(student);
     }
     public Student loginStudent(String email, String rawPassword) throws Exception{
+        if(email == null || !email.matches(EMAIL_REGEX)){
+            throw new Exception("Invalid email format!");
+        }
+
         Student student = studentRepository.findByEmail(email)
             .orElseThrow(() -> new Exception("User does not exist!"));
 
