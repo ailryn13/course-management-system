@@ -32,7 +32,7 @@ public StudentController(StudentService studentService, EnrollmentService enroll
     }
 
     @PostMapping("/login")
-    public Student loginStudent(@RequestBody Map<String,String> credentials) throws Exception{
+    public ResponseEntity<?> loginStudent(@RequestBody Map<String,String> credentials) throws Exception{
         String email = credentials.get("email");
         String password = credentials.get("password");
 
