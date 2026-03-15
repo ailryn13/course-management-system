@@ -22,11 +22,18 @@ public class StudentService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
     public Student registerStudent(Student student) throws Exception{
-        if(student.getName()==null || !student.getName().matches("[A-Za-z ]+$")){
+
+        String cleanEmail = student.getEmail() != null ? student.getEmail().trim().toLowerCase() : null;
+        String cleanName = student.getName() != null ? student.getName().trim() : null;
+
+        student.setEmail(cleanEmail);
+        student.setEmail(cleanName);
+
+        if(cleanName==null || !cleanName.matches("[A-Za-z ]+$")){
             throw new Exception("Registration failed: Name can only contain letters and spaces!");
         }
 
-        if(student.getEmail() == null || student.getEmail().matches(EMAIL_REGEX)){
+        if(cleanEmail == null || !cleanEmail.matches(EMAIL_REGEX)){
             throw new Exception("Registration failed: Invalid email format!");
         }
 
@@ -34,7 +41,7 @@ public class StudentService {
             throw new Exception("Registration failed: Password must be at le");
         }
 
-        Optional<Student> existingStudent= studentRepository.findByEmail(student.getEmail());
+        Optional<Student> existingStudent= studentRepository.findByEmail(cleanEmail);
         if(existingStudent.isPresent()){
             throw new Exception("Email is already Registered!");
         }
@@ -44,11 +51,13 @@ public class StudentService {
         return studentRepository.save(student);
     }
     public Student loginStudent(String email, String rawPassword) throws Exception{
-        if(email == null || !email.matches(EMAIL_REGEX)){
+        String cleanEmail = email != null ? email.trim() : null;
+
+        if(cleanEmail == null || !cleanEmail.matches(EMAIL_REGEX)){
             throw new Exception("Invalid email format!");
         }
 
-        Student student = studentRepository.findByEmail(email)
+        Student student = studentRepository.findByEmail(cleanEmail)
             .orElseThrow(() -> new Exception("User does not exist!"));
 
         if(!passwordEncoder.matches(rawPassword, student.getPassword())){
