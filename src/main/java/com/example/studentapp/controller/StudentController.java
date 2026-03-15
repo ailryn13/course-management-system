@@ -15,10 +15,10 @@ public class StudentController {
     private final StudentService studentService;
     private final EnrollmentService enrollmentService;
 
-    public StudentController(StudentService studentService, EnrollmentService enrollmentService){
-        this.studentService = studentService;
-        this.enrollmentService = enrollmentService;
-    }
+public StudentController(StudentService studentService, EnrollmentService enrollmentService){
+    this.studentService = studentService;
+    this.enrollmentService = enrollmentService;
+}
 
     @PostMapping("/register")
     public ResponseEntity<?> registerStudent(@RequestBody Student student) throws Exception{
@@ -32,7 +32,7 @@ public class StudentController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginStudent(@RequestBody Map<String,String> credentials) throws Exception{
+    public Student loginStudent(@RequestBody Map<String,String> credentials) throws Exception{
         String email = credentials.get("email");
         String password = credentials.get("password");
 
