@@ -27,7 +27,7 @@ public class StudentService {
         String cleanName = student.getName() != null ? student.getName().trim() : null;
 
         student.setEmail(cleanEmail);
-        student.setEmail(cleanName);
+        student.setName(cleanName);
 
         if(cleanName==null || !cleanName.matches("[A-Za-z ]+$")){
             throw new Exception("Registration failed: Name can only contain letters and spaces!");
