@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @RestController
 @RequestMapping("/api/students")
 @CrossOrigin(origins = "*")
 public class StudentController {
+
+    private static final Logger logger = LogManager.getLogger(StudentController.class);
     private final StudentService studentService;
     private final EnrollmentService enrollmentService;
 
@@ -22,12 +27,14 @@ public StudentController(StudentService studentService, EnrollmentService enroll
 
     @PostMapping("/register")
     public ResponseEntity<?> registerStudent(@RequestBody Student student){
+        logger.info("Attempting to register a new student with email: {}",student.getEmail());
         Student savedStudent = studentService.registerStudent(student);
 
         Map<String,Object> response = new HashMap<>();
         response.put("message","Registration Successful!");
         response.put("studentId",savedStudent.getId());
 
+        logger.info("Registration successful for student ID:");
         return ResponseEntity.ok(response);
     }
 
@@ -36,6 +43,8 @@ public StudentController(StudentService studentService, EnrollmentService enroll
         String email = credentials.get("email");
         String password = credentials.get("password");
 
+        logger.info("login attempt for email: {}", email);
+
         Student loggedInStudent = studentService.loginStudent(email,password);
 
         Map<String, Object>response = new HashMap<>();
@@ -43,11 +52,13 @@ public StudentController(StudentService studentService, EnrollmentService enroll
         response.put("studentId", loggedInStudent.getId());
         response.put("name", loggedInStudent.getName());
 
+        logger.info("login succesful for Student ID: {}",loggedInStudent.getId());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}/enrollments")
     public ResponseEntity<?> getStudentEnrollments(@PathVariable Long id){
+        logger.info("Fetching enrollments for student ID: {}", id);
         return ResponseEntity.ok(enrollmentService.getStudentEnrollments(id));
     }
 }
