@@ -3,6 +3,7 @@ package com.example.studentapp.service;
 import com.example.studentapp.entity.Course;
 import com.example.studentapp.entity.Enrollment;
 import com.example.studentapp.entity.Student;
+import com.example.studentapp.exception.GlobalExceptionHandler;
 import com.example.studentapp.repository.CourseRepository;
 import com.example.studentapp.repository.EnrollmentRepository;
 import com.example.studentapp.repository.StudentRepository;
@@ -25,17 +26,17 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public Enrollment enrollStudent(Long studentId, Long courseId) throws Exception{
+    public Enrollment enrollStudent(Long studentId, Long courseId) {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new Exception("Student not found!"));
+                .orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Student not found!"));
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new Exception("Course not found!"));
+                .orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Course not found!"));
 
         if(enrollmentRepository.existsByStudentAndCourse(student,course)){
-            throw new Exception("Student is already Enrolled in this course!");
+            throw new GlobalExceptionHandler.DuplicateResourceException("Student is already Enrolled in this course!");
         }
         if(course.getAvailableSeats()<=0){
-            throw new Exception("Sorry, this course is fully booked!");
+            throw new GlobalExceptionHandler.CourseFullException("Sorry, this course is fully booked!");
         }
 
         course.setAvailableSeats(course.getAvailableSeats()-1);
