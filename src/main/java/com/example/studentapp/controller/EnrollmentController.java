@@ -1,6 +1,5 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.dto.EnrollmentRequest;
 import com.example.studentapp.entity.Enrollment;
 import com.example.studentapp.service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
