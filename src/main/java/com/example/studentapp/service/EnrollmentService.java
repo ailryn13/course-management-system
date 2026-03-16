@@ -3,7 +3,7 @@ package com.example.studentapp.service;
 import com.example.studentapp.entity.Course;
 import com.example.studentapp.entity.Enrollment;
 import com.example.studentapp.entity.Student;
-import com.example.studentapp.exception.GlobalExceptionHandler;
+import com.example.studentapp.exception.AppExceptions;
 import com.example.studentapp.repository.CourseRepository;
 import com.example.studentapp.repository.EnrollmentRepository;
 import com.example.studentapp.repository.StudentRepository;
@@ -28,15 +28,15 @@ public class EnrollmentService {
     @Transactional
     public Enrollment enrollStudent(Long studentId, Long courseId) {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Student not found!"));
+                .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Student not found!"));
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Course not found!"));
+                .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Course not found!"));
 
         if(enrollmentRepository.existsByStudentAndCourse(student,course)){
-            throw new GlobalExceptionHandler.DuplicateResourceException("Student is already Enrolled in this course!");
+            throw new AppExceptions.DuplicateResourceException("Student is already Enrolled in this course!");
         }
         if(course.getAvailableSeats()<=0){
-            throw new GlobalExceptionHandler.CourseFullException("Sorry, this course is fully booked!");
+            throw new AppExceptions.CourseFullException("Sorry, this course is fully booked!");
         }
 
         course.setAvailableSeats(course.getAvailableSeats()-1);
@@ -50,14 +50,14 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public void unenrollStudent(Long studentId, Long courseId) throws Exception{
+    public void unenrollStudent(Long studentId, Long courseId){
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new Exception("Student not found!"));
+                .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Student not found!"));
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new Exception("Course not found!"));
+                .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Course not found!"));
 
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourse(student,course)
-                .orElseThrow(() -> new Exception("Enrollment record not found"));
+                .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Enrollment record not found"));
 
         enrollmentRepository.delete(enrollment);
 

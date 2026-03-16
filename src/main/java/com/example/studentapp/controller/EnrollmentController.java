@@ -22,13 +22,13 @@ public class EnrollmentController {
     }
 
     @PostMapping("/{courseId}")
-    public ResponseEntity<?> enrollStudent(@PathVariable Long courseId,@RequestParam Long studentId) throws Exception{
+    public ResponseEntity<?> enrollStudent(@PathVariable Long courseId,@RequestParam Long studentId){
         Enrollment enrollment = enrollmentService.enrollStudent(studentId, courseId);
         return ResponseEntity.ok(enrollment);
     }
 
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<?> unenrollStudent(@PathVariable Long courseId,@RequestParam Long studentId) throws Exception{
+    public ResponseEntity<?> unenrollStudent(@PathVariable Long courseId,@RequestParam Long studentId){
         enrollmentService.unenrollStudent(studentId,courseId);
 
         Map<String, String> response = new HashMap<>();

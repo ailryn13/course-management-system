@@ -1,6 +1,7 @@
 package com.example.studentapp.service;
 
 import com.example.studentapp.entity.Course;
+import com.example.studentapp.exception.AppExceptions;
 import com.example.studentapp.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,8 @@ public class CourseService {
             return courseRepository.findAll();
     }
 
-    public Course getCourseById(Long id) throws Exception{
+    public Course getCourseById(Long id){
         return courseRepository.findById(id)
-                .orElseThrow(() -> new Exception("Course not found with ID: " + id));
+                .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Course not found with ID: " + id));
     }
 }

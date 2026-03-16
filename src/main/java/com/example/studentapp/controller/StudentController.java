@@ -21,7 +21,7 @@ public StudentController(StudentService studentService, EnrollmentService enroll
 }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerStudent(@RequestBody Student student) throws Exception{
+    public ResponseEntity<?> registerStudent(@RequestBody Student student){
         Student savedStudent = studentService.registerStudent(student);
 
         Map<String,Object> response = new HashMap<>();
@@ -32,7 +32,7 @@ public StudentController(StudentService studentService, EnrollmentService enroll
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginStudent(@RequestBody Map<String,String> credentials) throws Exception{
+    public ResponseEntity<?> loginStudent(@RequestBody Map<String,String> credentials){
         String email = credentials.get("email");
         String password = credentials.get("password");
 
