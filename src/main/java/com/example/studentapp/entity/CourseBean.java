@@ -4,7 +4,7 @@ import jakarta.persistence.*; //create a dto
 
 @Entity
 @Table(name = "COURSE")
-public class Course {
+public class CourseBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +20,7 @@ public class Course {
     @Column(name = "AVAILABLE_SEATS", nullable = false)
     private Integer availableSeats;
 
-    public Course(){
+    public CourseBean(){
     }
 
     public long getId() {

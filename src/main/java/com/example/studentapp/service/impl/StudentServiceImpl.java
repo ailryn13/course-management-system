@@ -1,7 +1,7 @@
 package com.example.studentapp.service.impl;
 
 import com.example.studentapp.dto.StudentDto;
-import com.example.studentapp.entity.Student;
+import com.example.studentapp.entity.StudentBean;
 import com.example.studentapp.exception.AppExceptions;
 import com.example.studentapp.repository.StudentRepository;
 import com.example.studentapp.service.StudentService;
@@ -23,15 +23,15 @@ public class StudentServiceImpl implements StudentService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    private StudentDto convertToDto(Student student) {
+    private StudentDto convertToDto(StudentBean student) {
         StudentDto dto = new StudentDto();
         BeanUtils.copyProperties(student, dto);
         dto.setPassword(null); // Mask password
         return dto;
     }
 
-    private Student convertToEntity(StudentDto dto) {
-        Student student = new Student();
+    private StudentBean convertToEntity(StudentDto dto) {
+        StudentBean student = new StudentBean();
         BeanUtils.copyProperties(dto, student, "id"); // Ignore ID on creation
         return student;
     }
@@ -55,17 +55,17 @@ public class StudentServiceImpl implements StudentService {
         String cleanEmail = studentDto.getEmail().trim().toLowerCase();
         String cleanName = studentDto.getName().trim();
 
-        Optional<Student> existingStudent = studentRepository.findByEmail(cleanEmail);
+        Optional<StudentBean> existingStudent = studentRepository.findByEmail(cleanEmail);
         if(existingStudent.isPresent()){
             throw new AppExceptions.DuplicateResourceException("Email is already Registered!");
         }
 
-        Student student = convertToEntity(studentDto);
+        StudentBean student = convertToEntity(studentDto);
         student.setEmail(cleanEmail);
         student.setName(cleanName);
         student.setPassword(passwordEncoder.encode(studentDto.getPassword()));
 
-        Student savedStudent = studentRepository.save(student);
+        StudentBean savedStudent = studentRepository.save(student);
         return convertToDto(savedStudent);
     }
 
@@ -78,7 +78,7 @@ public class StudentServiceImpl implements StudentService {
 
         String cleanEmail = email.trim().toLowerCase();
 
-        Student student = studentRepository.findByEmail(cleanEmail)
+        StudentBean student = studentRepository.findByEmail(cleanEmail)
                 .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("User does not exist!"));
 
         if(!passwordEncoder.matches(rawPassword, student.getPassword())){

@@ -1,7 +1,7 @@
 package com.example.studentapp.service.impl;
 
 import com.example.studentapp.dto.CourseDto;
-import com.example.studentapp.entity.Course;
+import com.example.studentapp.entity.CourseBean;
 import com.example.studentapp.exception.AppExceptions;
 import com.example.studentapp.repository.CourseRepository;
 import com.example.studentapp.service.CourseService;
@@ -23,14 +23,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     // --- Private Helper Methods ---
-    private CourseDto convertToDto(Course course) {
+    private CourseDto convertToDto(CourseBean course) {
         CourseDto courseDto = new CourseDto();
         BeanUtils.copyProperties(course, courseDto);
         return courseDto;
     }
 
-    private Course convertToEntity(CourseDto courseDto) {
-        Course course = new Course();
+    private CourseBean convertToEntity(CourseDto courseDto) {
+        CourseBean course = new CourseBean();
         BeanUtils.copyProperties(courseDto, course, "id");
         return course;
     }
@@ -38,9 +38,9 @@ public class CourseServiceImpl implements CourseService {
     // --- Interface Methods ---
     @Override
     public CourseDto createCourse(CourseDto courseDto){
-        Course course = convertToEntity(courseDto);
+        CourseBean course = convertToEntity(courseDto);
         course.setAvailableSeats(course.getTotalSeats());
-        Course savedCourse = courseRepository.save(course);
+        CourseBean savedCourse = courseRepository.save(course);
         return convertToDto(savedCourse);
     }
 
@@ -54,7 +54,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDto getCourseById(Long id){
-        Course course = courseRepository.findById(id)
+        CourseBean course = courseRepository.findById(id)
                 .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Course not found with ID: " + id));
         return convertToDto(course);
     }

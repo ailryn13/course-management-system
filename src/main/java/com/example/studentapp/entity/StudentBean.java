@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "STUDENT")
-public class Student {
+public class StudentBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +22,7 @@ public class Student {
     protected void onCreate(){
         this.createdAt = LocalDateTime.now();
     }
-    public Student(){
+    public StudentBean(){
     }
     public long getId() {
         return id;

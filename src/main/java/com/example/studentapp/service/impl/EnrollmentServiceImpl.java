@@ -3,9 +3,9 @@ package com.example.studentapp.service.impl;
 import com.example.studentapp.dto.CourseDto;
 import com.example.studentapp.dto.EnrollmentDto;
 import com.example.studentapp.dto.StudentDto;
-import com.example.studentapp.entity.Course;
+import com.example.studentapp.entity.CourseBean;
 import com.example.studentapp.entity.Enrollment;
-import com.example.studentapp.entity.Student;
+import com.example.studentapp.entity.StudentBean;
 import com.example.studentapp.exception.AppExceptions;
 import com.example.studentapp.repository.CourseRepository;
 import com.example.studentapp.repository.EnrollmentRepository;
@@ -58,9 +58,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     @Transactional
     public EnrollmentDto enrollStudent(Long studentId, Long courseId) {
-        Student student = studentRepository.findById(studentId)
+        StudentBean student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Student not found!"));
-        Course course = courseRepository.findById(courseId)
+        CourseBean course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Course not found!"));
 
         if(enrollmentRepository.existsByStudentAndCourse(student,course)){
@@ -84,9 +84,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     @Transactional
     public void unenrollStudent(Long studentId, Long courseId){
-        Student student = studentRepository.findById(studentId)
+        StudentBean student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Student not found!"));
-        Course course = courseRepository.findById(courseId)
+        CourseBean course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new AppExceptions.ResourceNotFoundException("Course not found!"));
 
         Enrollment enrollment = enrollmentRepository.findByStudentAndCourse(student,course)

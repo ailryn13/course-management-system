@@ -13,11 +13,11 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    private StudentBean student;
 
     @ManyToOne
     @JoinColumn(name = "course_id",nullable = false)
-    private Course course;
+    private CourseBean course;
 
     private LocalDateTime enrollmentDate; //enrollment view dto
 
@@ -37,19 +37,19 @@ public class Enrollment {
         this.id = id;
     }
 
-    public Student getStudent() {
+    public StudentBean getStudent() {
         return student;
     }
 
-    public void setStudent(Student student) {
+    public void setStudent(StudentBean student) {
         this.student = student;
     }
 
-    public Course getCourse() {
+    public CourseBean getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(CourseBean course) {
         this.course = course;
     }
 
