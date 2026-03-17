@@ -673,3 +673,6 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/SPEC Project/
 2026-03-17 06:57:33 [http-nio-8080-exec-5] INFO  com.example.studentapp.controller.EnrollmentController - Succesfully enrolled Student ID 1 into Course ID 1
 2026-03-17 06:57:33 [http-nio-8080-exec-6] INFO  com.example.studentapp.controller.CourseController - Fetching All available courses
 2026-03-17 06:57:33 [http-nio-8080-exec-7] INFO  com.example.studentapp.controller.StudentController - Fetching enrollments for student ID: 1
+2026-03-17 07:19:58 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-17 07:19:58 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-17 07:19:58 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
