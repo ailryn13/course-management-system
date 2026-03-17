@@ -1,6 +1,6 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.entity.Course;
+import com.example.studentapp.dto.CourseDto; // <-- Added DTO import
 import com.example.studentapp.service.CourseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,18 +23,26 @@ public class CourseController {
     private CourseController(CourseService courseService){
         this.courseService = courseService;
     }
+
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course){
-        logger.info("Attempting to create a new Course: {}",course.getName());
-        Course savedCourse = courseService.createCourse(course);
-        logger.info("Succesfully created course with ID: {}", savedCourse.getId());
+    // <-- Changed Course to CourseDto in the return type and parameter
+    public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto){
+        logger.info("Attempting to create a new Course: {}", courseDto.getName());
+
+        // <-- Changed Course to CourseDto here
+        CourseDto savedCourse = courseService.createCourse(courseDto);
+
+        logger.info("Successfully created course with ID: {}", savedCourse.getId());
         return ResponseEntity.ok(savedCourse);
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses(){
+    // <-- Changed Course to CourseDto in the return type
+    public ResponseEntity<List<CourseDto>> getAllCourses(){
         logger.info("Fetching All available courses");
-        List<Course> courses = courseService.getAllCourses();
+
+        // <-- Changed Course to CourseDto here
+        List<CourseDto> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses);
     }
 }

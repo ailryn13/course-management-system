@@ -19,7 +19,7 @@ public class Enrollment {
     @JoinColumn(name = "course_id",nullable = false)
     private Course course;
 
-    private LocalDateTime enrollmentDate;
+    private LocalDateTime enrollmentDate; //enrollment view dto
 
     @PrePersist
     protected void onCreate(){

@@ -1,6 +1,6 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.entity.Enrollment;
+import com.example.studentapp.dto.EnrollmentDto;
 import com.example.studentapp.service.EnrollmentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,14 +20,14 @@ public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
     @Autowired
-    public EnrollmentController(EnrollmentService enrollmentService){
+    public EnrollmentController(EnrollmentService enrollmentService){ // change autowire
         this.enrollmentService = enrollmentService;
     }
 
     @PostMapping("/{courseId}")
     public ResponseEntity<?> enrollStudent(@PathVariable Long courseId,@RequestParam Long studentId){
         logger.info("Student ID {} is attempting to enroll in Course ID {}", studentId, courseId);
-        Enrollment enrollment = enrollmentService.enrollStudent(studentId, courseId);
+        EnrollmentDto enrollment = enrollmentService.enrollStudent(studentId, courseId);
         logger.info("Succesfully enrolled Student ID {} into Course ID {}", studentId, courseId);
         return ResponseEntity.ok(enrollment);
     }

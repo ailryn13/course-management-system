@@ -1,6 +1,6 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.entity.Student;
+import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.service.EnrollmentService;
 import com.example.studentapp.service.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +20,23 @@ public class StudentController {
     private final StudentService studentService;
     private final EnrollmentService enrollmentService;
 
-public StudentController(StudentService studentService, EnrollmentService enrollmentService){
-    this.studentService = studentService;
-    this.enrollmentService = enrollmentService;
-}
+    public StudentController(StudentService studentService, EnrollmentService enrollmentService){
+        this.studentService = studentService;
+        this.enrollmentService = enrollmentService;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerStudent(@RequestBody Student student){
-        logger.info("Attempting to register a new student with email: {}",student.getEmail());
-        Student savedStudent = studentService.registerStudent(student);
+    public ResponseEntity<?> registerStudent(@RequestBody StudentDto studentDto){
+        logger.info("Attempting to register a new student with email: {}", studentDto.getEmail());
+
+        // Changed Student to StudentDto here
+        StudentDto savedStudent = studentService.registerStudent(studentDto);
 
         Map<String,Object> response = new HashMap<>();
         response.put("message","Registration Successful!");
         response.put("studentId",savedStudent.getId());
 
-        logger.info("Registration successful for student ID:");
+        logger.info("Registration successful for student ID: {}", savedStudent.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -45,14 +47,15 @@ public StudentController(StudentService studentService, EnrollmentService enroll
 
         logger.info("login attempt for email: {}", email);
 
-        Student loggedInStudent = studentService.loginStudent(email,password);
+        // Changed Student to StudentDto here to fix the compilation error
+        StudentDto loggedInStudent = studentService.loginStudent(email,password);
 
         Map<String, Object>response = new HashMap<>();
         response.put("message","login Successful!");
         response.put("studentId", loggedInStudent.getId());
         response.put("name", loggedInStudent.getName());
 
-        logger.info("login succesful for Student ID: {}",loggedInStudent.getId());
+        logger.info("login successful for Student ID: {}",loggedInStudent.getId());
         return ResponseEntity.ok(response);
     }
 

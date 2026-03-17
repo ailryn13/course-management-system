@@ -1,13 +1,13 @@
-package com.example.studentapp.entity;
+package com.example.studentapp.entity; //course bean
 
-import jakarta.persistence.*;
+import jakarta.persistence.*; //create a dto
 
 @Entity
 @Table(name = "COURSE")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false,length = 100)
     private String name;
